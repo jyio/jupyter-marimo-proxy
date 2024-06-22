@@ -4,7 +4,7 @@ import os
 
 def setup_marimoserver():
 	return {
-		'command': ['marimo', 'edit', '--port', '{port}', '--base-url', '/user/' + os.environ['JUPYTERHUB_USER'] + '/marimo', '--no-token', '--headless'],
+		'command': ['marimo', 'edit', '--port', '{port}', '--base-url', os.environ['JUPYTERHUB_SERVICE_PREFIX'] + 'marimo', '--no-token', '--headless'],
 		'timeout': 60,
 		'absolute_url': True,
 		'launcher_entry': {
