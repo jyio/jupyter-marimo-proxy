@@ -4,8 +4,6 @@
 
 On a **JupyterHub** deployment, `jupyter-marimo-proxy` leverages **JupyterHub**'s existing authenticator and spawner to launch **Marimo** within users' **Jupyter** environments.
 
-*Caveat emptor:* `jupyter-marimo-proxy` starts **Marimo** processes that listen on local network ports. On a multi-user server, users could potentially access or interfere with each other's **Marimo** instances. This [well-known issue](https://github.com/jupyterhub/jupyter-server-proxy#security-warning) could be mitigated by isolating users, for example, by using [`DockerSpawner`](https://jupyterhub-dockerspawner.readthedocs.io/) to spawn single-user containers.
-
 ## Installation
 
 `jupyter-marimo-proxy` requires **Marimo**, but does not explicitly declare a dependency on `marimo`, so they may be installed separately. Both may be installed using `pip` like so:
