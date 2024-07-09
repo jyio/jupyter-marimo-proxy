@@ -49,6 +49,21 @@ RUN	/usr/bin/pip install --no-cache-dir https://github.com/jyio/jupyter-marimo-p
 RUN	useradd -ms /bin/bash demo
 ```
 
+## Executable search path modification
+
+For search path modifications that should be available to all users, I'd recommend invoking **Jupyter** with the desired search path, e.g., by setting `PATH` in the Dockerfile or an entrypoint wrapper. On some deployments, it may be impractical to set up the search path before/while invoking **Jupyter**, such as when the exact paths must be resolved at runtime. `jupyter-marimo-proxy` provides two ways to modify the search path: by environment variable or by configuration file.
+
+For example, to prepend `~/.local/bin:~/bin` to the search path, one could set environment variable `JUPYTERMARIMOPROXY_PATH` to `~/.local/bin:~/bin:$PATH` or create a configuration file `~/.jupytermarimoproxyrc` containing:
+
+```ini
+[DEFAULT]
+path = ~/.local/bin:~/bin:$PATH
+```
+
+If using the environment variable, `JUPYTERMARIMOPROXY_PATH` may need to be added to [`c.Spawner.env_keep`](https://jupyterhub.readthedocs.io/en/stable/reference/api/spawner.html#jupyterhub.spawner.Spawner.env_keep) in the **JupyterHub** configuration.
+
+Both methods support home directory and environment variable expansion, and the `JUPYTERMARIMOPROXY_PATH` variable may be subject to double-expansion if not properly escaped or quoted. If the environment variable and the configuration option were both present, the environment variable would take precedence.
+
 ## Usage with DockerSpawner
 
 **Marimo** and `jupyter-marimo-proxy` should be installed into the single-user containers. They are not needed by the main hub.
@@ -61,11 +76,7 @@ Make sure `jupyter-marimo-proxy` is installed into the same Python environment w
 
 ### **Marimo** icon appears in the launcher, but fails to launch **Marimo**
 
-Make sure **Marimo** is installed and available in the search path.
-
-If the search path were modified in a *descendent* of **Jupyter**, the modification would not be available to **Jupyter** itself. For search path modifications that should be available to all users, I'd recommend invoking **Jupyter** with the desired search path, e.g., by setting `PATH` in the Dockerfile or an entrypoint wrapper.
-
-If it were impractical to set up the search path before/while invoking **Jupyter** (such as when the exact paths must be resolved at runtime), one could [patch this package](https://github.com/jyio/jupyter-marimo-proxy/blob/feature-path-prefix-local-bin/jupyter_marimo_proxy/__init__.py) to effect the desired search path modifications while launching **Marimo**. [Here's a variant](https://github.com/jyio/jupyter-marimo-proxy/tree/feature-path-prefix-local-bin) that prepends `PATH` with `~/.local/bin` and `~/bin/` that could be installed by `pip install https://github.com/jyio/jupyter-marimo-proxy/archive/feature-path-prefix-local-bin.zip` (but when using `DockerSpawner` and the home directory were known in advance, this could perhaps be accomplished more simply by adding `ENV PATH=/home/jovyan/.local/bin:/home/jovyan/bin:$PATH` to the Dockerfile).
+Make sure **Marimo** is installed and available in the search path. If the search path were modified in a *descendent* of **Jupyter**, the modification would not be available to **Jupyter** itself. See advice regarding search path modification above.
 
 [b-data](https://github.com/b-data) customers should use [b-data's fork](https://github.com/b-data/jupyterlab-r-docker-stack#marimo).
 
