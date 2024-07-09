@@ -9,7 +9,7 @@ On a **JupyterHub** deployment, `jupyter-marimo-proxy` leverages **JupyterHub**'
 `jupyter-marimo-proxy` requires **Marimo**, but does not explicitly declare a dependency on `marimo`, so they may be installed separately. Both may be installed using `pip` like so:
 
 ```sh
-$ pip install 'marimo>=0.6.21' https://github.com/jyio/jupyter-marimo-proxy/archive/main.zip
+$ pip install 'marimo>=0.6.21' jupyter-marimo-proxy
 ```
 
 ## Minimal demo, single Python environment
@@ -21,7 +21,7 @@ FROM	quay.io/jupyterhub/jupyterhub:latest
 RUN	cd /srv/jupyterhub && jupyterhub --generate-config && \
 	echo "c.JupyterHub.authenticator_class = 'dummy'" >> jupyterhub_config.py && \
 	echo "c.DummyAuthenticator.password = 'demo'" >> jupyterhub_config.py && \
-	pip install --no-cache-dir notebook 'marimo>=0.6.21' https://github.com/jyio/jupyter-marimo-proxy/archive/main.zip
+	pip install --no-cache-dir notebook 'marimo>=0.6.21' jupyter-marimo-proxy
 RUN	useradd -ms /bin/bash demo
 ```
 
@@ -44,7 +44,7 @@ RUN	curl -fsSL https://github.com/conda-forge/miniforge/releases/latest/download
 	bash /root/miniforge.sh -b -p /opt/conda && rm /root/miniforge.sh
 
 RUN	/opt/conda/bin/pip install --no-cache-dir 'marimo>=0.6.21'
-RUN	/usr/bin/pip install --no-cache-dir https://github.com/jyio/jupyter-marimo-proxy/archive/main.zip
+RUN	/usr/bin/pip install --no-cache-dir jupyter-marimo-proxy
 
 RUN	useradd -ms /bin/bash demo
 ```
