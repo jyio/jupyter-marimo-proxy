@@ -80,6 +80,10 @@ Make sure **Marimo** is installed and available in the search path. If the searc
 
 [b-data](https://github.com/b-data) customers should use [b-data's fork](https://github.com/b-data/jupyterlab-r-docker-stack#marimo).
 
+### **Marimo** icon launches **Marimo**, but **Marimo** could not find modules that have already been installed
+
+Make sure **Marimo** is installed into the Python environment where these modules are installed. Alternatively, make sure the expected modules are installed into the Python environment where **Marimo** is installed. See advanced example above.
+
 ### **Marimo** returns "Error: No such option: --base-url"
 
 The `--base-url` argument was introduced to `marimo edit` in version `0.6.21`. Try **Marimo** `0.6.21` or newer.
