@@ -17,7 +17,7 @@ def setup_marimoserver():
 		newpath = os.path.expandvars(os.pathsep.join(os.path.expanduser(x) for x in newpath.split(os.pathsep)))
 		newpath = os.pathsep.join(x for x in newpath.split(os.pathsep) if x and x not in seen and not seen.add(x) and os.path.exists(x))
 	return {
-		'command': ['marimo', 'edit', '--port', '{port}', '--base-url', os.environ['JUPYTERHUB_SERVICE_PREFIX'] + 'marimo', '--token', '--token-password', token, '--headless'],
+		'command': ['marimo', 'edit', '--port', '{port}', '--base-url', os.environ.get('JUPYTERHUB_SERVICE_PREFIX', '/') + 'marimo', '--token', '--token-password', token, '--headless'],
 		'environment': { 'PATH': newpath } if newpath else {},
 		'timeout': 60,
 		'absolute_url': True,
